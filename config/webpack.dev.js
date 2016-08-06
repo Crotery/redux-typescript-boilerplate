@@ -6,7 +6,7 @@ var APP_DIR = path.join(__dirname, '..', 'app');
 module.exports = {
   debug: true,
   devtool: 'eval',
-  entry: ['webpack-hot-middleware/client', './app/index.tsx'],
+  entry: ['webpack-hot-middleware/client', './app/index.jsx'],
   module: {
     // preLoaders: [{
     //   test: /\.tsx?$/,
@@ -14,8 +14,8 @@ module.exports = {
     //   include: APP_DIR
     // }],
     loaders: [{
-      test: /\.tsx?$/,
-      loaders: ['babel', 'ts'],
+      test: /\.jsx?$/,
+      loaders: ['babel'],
       include: APP_DIR
     }]
   },

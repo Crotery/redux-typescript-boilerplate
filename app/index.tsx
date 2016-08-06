@@ -1,12 +1,13 @@
 /// <reference path="../typings/index.d.ts" />
 
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import * as React from "react";
+import * as ReactDOM from "react-dom";
 import {observable} from "mobx/lib/mobx";
 import {observer} from "mobx-react/index";
 import DevTools from "mobx-react-devtools/index";
 class AppState {
   @observable timer = 0;
+
 
   constructor() {
     setInterval(() => {
@@ -15,7 +16,10 @@ class AppState {
   }
 
   resetTimer() {
-    this.timer = 0;
+   $.get("http://example.com/api.php", (req)=> {
+       console.log(req)
+      this.timer  = req.length;
+    })
   }
 }
 

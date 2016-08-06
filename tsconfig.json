@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es6",
     "module": "commonjs",
     "declaration": false,
     "noImplicitAny": false,
@@ -16,6 +16,7 @@
     "node_modules/mobx/lib/mobx.d.ts",
     "node_modules/mobx-react/index.d.ts",
     "node_modules/mobx-react-devtools/index.d.ts",
+
     "typings/index.d.ts"
   ],
   "exclude": ["node_modules", "config", "dev_server.js"]

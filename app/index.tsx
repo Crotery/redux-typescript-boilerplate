@@ -1,43 +1,71 @@
 /// <reference path="../typings/index.d.ts" />
 
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import { Store, createStore } from 'redux';
-import { Provider } from 'react-redux';
+import * as React from "react";
+import * as ReactDOM from "react-dom";
 
-import { App } from './components/app';
-import { counterApp } from './reducers';
-import {ICounterAction} from "./actions";
-
-declare const require: (name: String) => any;
+declare const require:(name:String) => any;
 
 interface IHotModule {
-  hot?: { accept: (path: string, callback: () => void) => void };
-};
-
-declare const module: IHotModule;
-
-function configureStore(): Store<ICounterAction> {
-  const store: Store<ICounterAction> = createStore(counterApp);
-
-  if (module.hot) {
-    module.hot.accept('./reducers', () => {
-      const nextRootReducer: any = require('./reducers').counterApp;
-      store.replaceReducer(nextRootReducer);
-    });
-  }
-
-  return store;
+    hot?:{ accept:(path:string, callback:() => void) => void };
 }
 
-const store: Store<ICounterAction> = configureStore();
+declare const module:IHotModule;
 
-class Main extends React.Component<{}, {}> {
-  public render(): React.ReactElement<Provider> {
-    return (<Provider store={store}>
-      <App />
-    </Provider>);
-  }
+class List extends React.Component<{lines:string[]}, {}> {
+    public render():React.ReactElement<any> {
+        return (
+            <div className="list">
+                {
+                    this.props.lines.map(function(line, index){
+                        return <div className="line">{line}</div>
+                    })
+                }
+            </div>
+
+        );
+    }
 }
+
+
+class Main extends React.Component<{}, {line?:string, lines?:string[]}> {
+
+    // constructor(){
+    //     super()
+    //    // this.change = this.change.bind(this)
+    // }
+    public state:{line?:string, lines?:string[]} = {
+        lines: []
+    };
+
+
+    public add() {
+        this.state.lines.push(this.state.line)
+        this.setState({
+            lines: this.state.lines
+        })
+    }
+
+    public change(evt) {
+        this.setState({
+            line: evt.target.value
+        })
+    }
+
+    public render():React.ReactElement<any> {
+
+        return (
+            <div>
+                <form>
+                    <input type="text" value={this.state.line} onChange={this.change.bind(this)}></input>
+                    <button onClick={this.add.bind(this)}>Add</button>
+                </form>
+
+                <List lines={this.state.lines}/>
+            </div>
+
+        );
+    }
+}
+
 
 ReactDOM.render(<Main />, document.getElementById('app'));

@@ -2,42 +2,40 @@
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { Store, createStore } from 'redux';
-import { Provider } from 'react-redux';
+import {observable} from "mobx/lib/mobx";
+import {observer} from "mobx-react/index";
+import DevTools from "mobx-react-devtools/index";
+class AppState {
+  @observable timer = 0;
 
-import { App } from './components/app';
-import { counterApp } from './reducers';
-import {ICounterAction} from "./actions";
+  constructor() {
+    setInterval(() => {
+      this.timer += 1;
+    }, 1000);
+  }
 
-declare const require: (name: String) => any;
+  resetTimer() {
+    this.timer = 0;
+  }
+}
 
-interface IHotModule {
-  hot?: { accept: (path: string, callback: () => void) => void };
+@observer
+class TimerView extends React.Component<{appState: AppState}, {}> {
+  render() {
+    return (
+        <div>
+          <button onClick={this.onReset}>
+            Seconds passed: {this.props.appState.timer}
+          </button>
+          <DevTools />
+        </div>
+    );
+  }
+
+  onReset = () => {
+    this.props.appState.resetTimer();
+  }
 };
 
-declare const module: IHotModule;
-
-function configureStore(): Store<ICounterAction> {
-  const store: Store<ICounterAction> = createStore(counterApp);
-
-  if (module.hot) {
-    module.hot.accept('./reducers', () => {
-      const nextRootReducer: any = require('./reducers').counterApp;
-      store.replaceReducer(nextRootReducer);
-    });
-  }
-
-  return store;
-}
-
-const store: Store<ICounterAction> = configureStore();
-
-class Main extends React.Component<{}, {}> {
-  public render(): React.ReactElement<Provider> {
-    return (<Provider store={store}>
-      <App />
-    </Provider>);
-  }
-}
-
-ReactDOM.render(<Main />, document.getElementById('app'));
+const appState =  new AppState();
+ReactDOM.render(<TimerView appState={appState} />, document.getElementById('app'));

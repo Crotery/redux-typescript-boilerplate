@@ -1,12 +1,21 @@
 {
   "compilerOptions": {
-    "target": "ES6",
-    "jsx": "preserve",
-    "experimentalDecorators": true
+    "target": "es5",
+    "module": "commonjs",
+    "declaration": false,
+    "noImplicitAny": false,
+    "removeComments": true,
+    "experimentalDecorators": true,
+    "noLib": false,
+    "jsx": "react",
+    "outDir": "dist"
   },
 
   "files":[
     "node_modules/redux/index.d.ts",
+    "node_modules/mobx/lib/mobx.d.ts",
+    "node_modules/mobx-react/index.d.ts",
+    "node_modules/mobx-react-devtools/index.d.ts",
     "typings/index.d.ts"
   ],
   "exclude": ["node_modules", "config", "dev_server.js"]
